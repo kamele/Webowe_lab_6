@@ -1,7 +1,8 @@
 <template>
     <div id="book-form">
-        <h3>form</h3>
+        <h3>Dodaj książke</h3>
         <form  @submit.prevent="handleSubmit">
+            <h4>Wprowadź dane nowej książki</h4>
             <label>Tytuł</label>
             <input v-model="book.title" type="text" 
             :class="{ 'has-error': submitting && invalidTitle }" 
@@ -9,7 +10,7 @@
             @keypress="clearStatus" 
             />
 
-            <label>Author</label>
+            <label>Autor (id autora)</label>
             <input v-model="book.authorId" type="text" 
             :class="{ 'has-error': submitting && invalidAuthorId }"
             @focus="clearStatus"
@@ -33,8 +34,7 @@
             <button>Dodaj ksiazke</button>
         </form>
 
-        <!-- <button><a href="http://localhost:8081/books">Przejdz do listy książek</a></button> -->
-        <a href="http://localhost:8081/books"><button>Przejdz do listy książek</button></a>
+        
 
     </div>
 </template>
@@ -70,9 +70,9 @@ import axios from "axios"
         console.log(this.books)
         },
         async addBook(book){
-                    alert(JSON.stringify(book))
+                    //alert(JSON.stringify(book))
                     const res = await axios.post("http://localhost:8080/post/book", book)
-                    alert(res.status)
+                    console.log(res.status)
         },
         async removeBook(book){
             const res = await axios.delete("http://localhost:8080/delete/book/"+book.id)

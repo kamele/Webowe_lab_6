@@ -1,6 +1,6 @@
 <template>
     <div id="book-delete">
-        <h3>form</h3>
+        <h3>Usuń książke</h3>
         <form  @submit.prevent="handleSubmit">
             <label>Id</label>
             <input v-model="id" type="text" 
@@ -18,8 +18,6 @@
 
             <button>Usuń ksiazke</button>
         </form>
-
-
         
 
 
@@ -43,7 +41,7 @@ import axios from "axios"
         
         async removeBook(id){
             const res = await axios.delete("http://localhost:8080/delete/book/"+id)
-            alert(res.status==200 || res.status==201 ? "Succes" : "Error: " + res.status)
+            console.log(res.status==200 || res.status==201 ? "Succes" : "Error: " + res.status)
         },
         handleSubmit() {
 

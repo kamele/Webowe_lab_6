@@ -1,8 +1,8 @@
 <template>
     <div id="book-update">
-        
+        <h3>Edytuj książke</h3>
         <form  @submit.prevent="handleSubmit">
-            <h3>Wprowadz id ksiazki do zmiany danych</h3>
+            <h4>Wprowadz id ksiazki do zmiany danych</h4>
             <label>Id</label>
             <input v-model="book.id" type="text" 
             :class="{ 'has-error': submitting && invalidId }" 
@@ -10,7 +10,7 @@
             @keypress="clearStatus" 
             />
 
-            <h3>Wprowadz nowe dane dla podanego id ksiazki</h3>
+            <h4>Wprowadz nowe dane dla podanego id ksiazki</h4>
             <label>Tytuł</label>
             <input v-model="book.title" type="text" 
             :class="{ 'has-error': submitting && invalidTitle }" 
@@ -42,7 +42,6 @@
             <button>Edytuj ksiazke</button>
         </form>
 
-
         
 
 
@@ -70,9 +69,9 @@ import axios from "axios"
     methods: {
         
         async updateBook(book){
-                    alert(JSON.stringify(book))
+                    //alert(JSON.stringify(book))
                     const res = await axios.post("http://localhost:8080/post/book/update", book)
-                    alert(res.status)
+                    console.log(res.status)
         },
         
         handleSubmit() {
@@ -80,7 +79,7 @@ import axios from "axios"
             this.submitting = true
             this.clearStatus()
             //check form fields
-            if (this.invalidId && (this.invalidTitle || this.invalidAuthorId || this.invalidPages)) {
+            if (this.invalidId || (this.invalidTitle && this.invalidAuthorId && this.invalidPages)) {
                 this.error = true
                 return
             }

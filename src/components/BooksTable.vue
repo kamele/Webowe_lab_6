@@ -1,5 +1,8 @@
 <template>
     <div id="books-table">
+        
+
+        <h3>Dostępne książki</h3>
         <table>
             <thead>
                 <tr>
@@ -16,6 +19,7 @@
                 </tr>
             </tbody>
         </table>
+        
     </div>
 </template>
 
@@ -49,4 +53,8 @@ import axios from "axios"
     }
 </script>
 
-<style scoped></style>
+<style scoped>
+button{
+    margin: 1%;
+}
+</style>
