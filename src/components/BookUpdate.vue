@@ -1,7 +1,16 @@
 <template>
-    <div id="book-form">
-        <h3>form</h3>
+    <div id="book-update">
+        
         <form  @submit.prevent="handleSubmit">
+            <h3>Wprowadz id ksiazki do zmiany danych</h3>
+            <label>Id</label>
+            <input v-model="book.id" type="text" 
+            :class="{ 'has-error': submitting && invalidId }" 
+            @focus="clearStatus"
+            @keypress="clearStatus" 
+            />
+
+            <h3>Wprowadz nowe dane dla podanego id ksiazki</h3>
             <label>Tytuł</label>
             <input v-model="book.title" type="text" 
             :class="{ 'has-error': submitting && invalidTitle }" 
@@ -30,11 +39,12 @@
             Dane poprawnie zapisano
             </p>
 
-            <button>Dodaj ksiazke</button>
+            <button>Edytuj ksiazke</button>
         </form>
 
-        <!-- <button><a href="http://localhost:8081/books">Przejdz do listy książek</a></button> -->
-        <a href="http://localhost:8081/books"><button>Przejdz do listy książek</button></a>
+
+        
+
 
     </div>
 </template>
@@ -50,6 +60,7 @@ import axios from "axios"
             error: false,
             success: false, 
             book: {
+                id:'',
                 title: '',
                 authorId: '',
                 pages: '',
@@ -57,40 +68,25 @@ import axios from "axios"
         }
     },
     methods: {
-        async fetchBooks(){
-        const url = "http://localhost:8080/get/books";
-        const res = await axios.get(url);
-        const fetchedBooks = res.data;
-        this.books = fetchedBooks.map(b => ({
-            "id": b.id,
-            "title": b.title,
-            "authorId": b.authorId,
-            "pages": b.pages
-        }))
-        console.log(this.books)
-        },
-        async addBook(book){
+        
+        async updateBook(book){
                     alert(JSON.stringify(book))
-                    const res = await axios.post("http://localhost:8080/post/book", book)
+                    const res = await axios.post("http://localhost:8080/post/book/update", book)
                     alert(res.status)
         },
-        async removeBook(book){
-            const res = await axios.delete("http://localhost:8080/delete/book/"+book.id)
-            alert(res.status==200 || res.status==201 ? "Succes" : "Error: " + res.status)
-            this.books = this.books.filter(b => b.id != book.id)
-        },
+        
         handleSubmit() {
 
             this.submitting = true
             this.clearStatus()
             //check form fields
-            if (this.invalidTitle || this.invalidAuthorId || this.invalidPages) {
+            if (this.invalidId && (this.invalidTitle || this.invalidAuthorId || this.invalidPages)) {
                 this.error = true
                 return
             }
 
 
-            this.addBook( this.book) 
+            this.updateBook( this.book) 
             console.log('uruchomiono handleSubmit')
 
             //clear form fields
@@ -111,6 +107,9 @@ import axios from "axios"
 
     }, 
     computed: {
+        invalidId() {
+            return this.book.title === ''
+        },
         invalidTitle() {
             return this.book.title === ''
         },
